@@ -1,0 +1,161 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+set go=
+set diffexpr=MyDiff()
+function MyDiff()
+	let opt = '-a --binary '
+	if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+	if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+	let arg1 = v:fname_in
+	if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+	let arg2 = v:fname_new
+	if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+	let arg3 = v:fname_out
+	if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+	let eq = ''
+	if $VIMRUNTIME =~ ' '
+		if &sh =~ '\<cmd'
+			let cmd = '""' . $VIMRUNTIME . '\diff"'
+			let eq = '"'
+		else
+			let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+		endif
+	else
+		let cmd = $VIMRUNTIME . '\diff'
+	endif
+	silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+" 全屏插件
+map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+"行号显示
+set nu!
+" 皮肤
+colorscheme desert 
+" 语法高亮
+syntax enable 
+syntax on
+" 设置tab键的宽度
+set shiftwidth=4
+set tabstop=4
+"自动切换工作目录
+set autochdir   
+
+
+
+
+
+"------------------------------------------------------自定义快捷键部分------------------------------------------------------
+"  //在你的vimrc文件中增加像如下这样格式的key bindings
+"  //格式为：
+"  //模式 <快捷键> 要执行的命令
+"  //模式：看下表，nmap为普通模式,imap为编辑模式
+"  //C表示ctrl,A表示Alt,S表示Shift,<CR>表示回车
+
+"  //比如下面这行表示在“正常||可视化||运算”模式下，按下Ctrl+W,则执行命令“:tabclose并回车”，就是关闭当前标签页
+"  map <C-w> :tabclose<CR>
+
+"  //又比如这行表示在“正常模式”下，按下Ctrl+t,
+"  //则依次执行:browse(打开选择文件对话框） tabnew将选定的文件在新标签页中打开
+"  nmap <C-t> :browse tabnew<CR>
+
+
+"  //下面这行和上面一样，只是先用Esc从编辑模式切换到正常模式
+"  imap <C-t> <Esc>:browse tabnew<CR>
+"----------------------------------------自定义快捷键用法说明--------------------------------------------------------
+" 自己增加的快捷键
+"    显示:NERDTree
+map <C-m> :NERDTree 
+"  格式化
+imap <C-S-f> <Esc>gg=G <C-o> <C-o> i
+
+"
+
+"
+"
+" 按,v查看_vimrc
+:nmap ,v :e $VIM/_vimrc<cr>
+
+
+" Vundle 配置
+filetype off
+" 此处规定Vundle的路径
+set rtp+=$VIM/vimfiles/bundle/vundle/
+call vundle#rc('$VIM/vimfiles/bundle/')
+Bundle 'gmarik/vundle'
+filetype plugin indent on
+
+" original repos on github<br>Bundle 'mattn/zencoding-vim'
+Bundle 'mattn/emmet-vim'
+Bundle 'drmingdrmer/xptemplate'
+
+" vim-scripts repos
+" l9 is a Vim-script library, which provides some utility functions and commands 
+" for programming in Vim. 
+Bundle 'L9'
+" FuzzyFinder provides convenient ways to quickly reach the 
+" buffer/file/command/bookmark/tag you want. FuzzyFinder searches with the 
+" fuzzy/partial pattern to which it converted an entered pattern. 
+Bundle 'FuzzyFinder'
+" With bufexplorer, you can quickly and easily switch between buffers by using the one of the default public interfaces: 
+
+"  '\be' (normal open)  or 
+"  '\bs' (force horizontal split open)  or 
+"  '\bv' (force vertical split open) 
+Bundle 'bufexplorer.zip'
+" 暂时没有下载下来
+" Bundle 'taglist.vim'
+" Vim 允许你在文本中放置自定义的标记。命令 "ma" 用 a 标记当前的光标位置。你可以在文本中使用 26 个标记（a到z）。这些标记是不可见的，只是一个由 Vim 记住的位置。
+Bundle 'Mark'
+" The NERD tree allows you to explore your filesystem and to open files and 
+" directories. It presents the filesystem to you in the form of a tree which you 
+" manipulate with the keyboard and/or mouse. It also allows you to perform 
+" simple filesystem operations. 
+Bundle 'The-NERD-tree'
+Bundle 'matrix.vim'
+Bundle 'closetag.vim'
+Bundle 'The-NERD-Commenter'
+Bundle 'matchit.zip'
+Bundle 'AutoComplPop'
+Bundle 'YankRing.vim'
+" 之前一直在使用ctag+supertab作为自动补全，但是ctag的补全必须借助不断更新tag文件，不够智能。所以在看到了neocomplcache后，毫不犹豫的改用了neocomplcache作为新的Vim自动补全插件。
+Bundle 'Shougo/neocomplcache'
+" 写js 和html 常用
+Bundle 'jsbeautify'
+Bundle 'JavaScript-syntax'
+Bundle 'jQuery'
+Bundle 'othree/html5.vim'
+" less 写css必备
+Bundle 'groenewege/vim-less'
+"mark down 插件
+Bundle 'Markdown'
+Bundle 'Markdown-syntax' 
+filetype plugin indent on     " required! 
+
+set nobackup                    " 关闭自动备份功能,backup自动备份
+"启动 自动最大化
+autocmd GUIEnter * simalt ~x
+"自定义关联文件类型
+au BufNewFile,BufRead *.less set filetype=css
+au BufRead,BufNewFile *.js set ft=javascript.jquery
+
+"编码相关"
+"set fileencoding = utf8  提示语法错误
+"set enc=2byte-gb18030   提示语法错误提 所以暂时封起来
+"自动判断编码时，依次尝试以下编码"
+set fileencodings=ucs-bom,utf-8,gb18030,default
+
+"---NeoComplCache 启动
+let g:neocomplcache_enable_at_startup = 1
+" 调整zen-coding(2012年改名为emmet) 快捷键为 tab
+let g:user_emmet_expandabbr_key = '<Tab>'
+
+"修改vimrc文件后自动加载"
+autocmd! bufwritepost _vimrc source % " for windows
+
+" 调整vim默认工作目录为_vimrc所在目录
+execute ":cd d:\x5_api\vim\prog\vim"
+
+

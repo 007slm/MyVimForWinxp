@@ -1,0 +1,97 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+set go=
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+" 全屏插件
+map <F11> <Esc>:call libcallnr("gvimfullscreen.dll", "ToggleFullScreen", 0)<CR>
+"行号显示
+set nu!
+" 皮肤
+colorscheme desert 
+" 语法高亮
+syntax enable 
+syntax on
+" 设置tab键的宽度
+set shiftwidth=4
+set tabstop=4
+
+" 按,v查看_vimrc
+:nmap ,v :e $VIM/_vimrc<cr>
+
+
+" Vundle 配置
+filetype off
+" 此处规定Vundle的路径
+set rtp+=$VIM/vimfiles/bundle/vundle/
+call vundle#rc('$VIM/vimfiles/bundle/')
+Bundle 'gmarik/vundle'
+filetype plugin indent on
+
+" original repos on github<br>Bundle 'mattn/zencoding-vim'
+Bundle 'mattn/emmet-vim'
+Bundle 'drmingdrmer/xptemplate'
+ 
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'bufexplorer.zip'
+" 暂时没有下载下来
+" Bundle 'taglist.vim'
+Bundle 'Mark'
+Bundle 'The-NERD-tree'
+Bundle 'matrix.vim'
+Bundle 'closetag.vim'
+Bundle 'The-NERD-Commenter'
+Bundle 'matchit.zip'
+Bundle 'AutoComplPop'
+Bundle 'YankRing.vim'
+" 之前一直在使用ctag+supertab作为自动补全，但是ctag的补全必须借助不断更新tag文件，不够智能。所以在看到了neocomplcache后，毫不犹豫的改用了neocomplcache作为新的Vim自动补全插件。
+Bundle 'Shougo/neocomplcache'
+" 写js 和html 常用
+Bundle 'jsbeautify'
+Bundle 'JavaScript-syntax'
+Bundle 'jQuery'
+Bundle 'othree/html5.vim'
+" less 写css必备
+Bundle 'groenewege/vim-less'
+"mark down 插件
+Bundle 'Markdown'
+Bundle 'Markdown-syntax' 
+filetype plugin indent on     " required! 
+
+"启动 自动最大化
+autocmd GUIEnter * simalt ~x
+"自定义关联文件类型
+au BufNewFile,BufRead *.less set filetype=css
+au BufRead,BufNewFile *.js set ft=javascript.jquery
+
+"---NeoComplCache 启动
+let g:neocomplcache_enable_at_startup = 1
+" 调整zen-coding(2012年改名为emmet) 快捷键为 tab
+let g:user_emmet_expandabbr_key = '<Tab>'
