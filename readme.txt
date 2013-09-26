@@ -1,4 +1,5 @@
-eclim йг©ирттзvimоб╣Всцeclipse╣д╡Е╪Ч
-plugIn-download йгобть╣д╡Е╪Ч
-  тщй╠ж╩спwindowsобх╚фа╡Е╪Ч
-prog йгvim ╟╡в╟╨С╣д╟╡в╟ЁлпР
+О╩©eclim Ф≤╞Е▐╞Д╩╔Е°╗vimД╦▀Х╟┐Г■╗eclipseГ └Ф▐▓Д╩╤
+plugIn-download Ф≤╞Д╦▀Х╫╫Г └Ф▐▓Д╩╤
+  Ф ┌Ф≈╤Е▐╙Ф°┴windowsД╦▀Е┘╗Е╠▐Ф▐▓Д╩╤
+prog Ф≤╞vim Е╝┴Хё┘Е░▌Г └Е╝┴Хё┘Г╗▀Е╨▐
+

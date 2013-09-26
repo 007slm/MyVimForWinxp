@@ -42,7 +42,8 @@ set shiftwidth=4
 set tabstop=4
 "自动切换工作目录
 set autochdir   
-
+" 智能查找匹配
+set nohls
 
 
 
@@ -156,6 +157,6 @@ let g:user_emmet_expandabbr_key = '<Tab>'
 autocmd! bufwritepost _vimrc source % " for windows
 
 " 调整vim默认工作目录为_vimrc所在目录
-execute ":cd d:\x5_api\vim\prog\vim"
+execute ":cd d:/x5_api/vim/prog/vim"
 
 
